@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.Text;
@@ -353,7 +353,7 @@ namespace TcLibraryVersions
 
         private static void createVersionArrayLists(ArrayList libs, ArrayList latestVersion, string TcVersion, string currentFileText, out ArrayList tcVersions, out ArrayList[] ghVersions)
         {
-            string ghHeadline = currentFileText.Substring(currentFileText.IndexOf("|TcVersion|") + 11);
+            string ghHeadline = currentFileText.Substring(currentFileText.IndexOf("|TcVersion|") + 10);
             string linebreak = ghHeadline.IndexOf("\n") >= 0 ? "\n" : "\r\n";
             ghHeadline = ghHeadline.Substring(0, ghHeadline.IndexOf(linebreak));
 
@@ -366,17 +366,17 @@ namespace TcLibraryVersions
             ArrayList[] ghVersionsTemp;
             string[] lines;
 
-            string pattern = @"[A-Z,a-z,0-9,_]+";
+            string pattern = @"([0-9]{3,}.[0-9]+)";
             headlineMatches = Regex.Matches(ghHeadline, pattern);
 
             // find out if the currentext has a normal or transposed table
-            if(headlineMatches.Count == 0)
+            if(headlineMatches.Count > 0)
             {
                 // The table is transposed
-                pattern = @"([0-9]{3,}.[0-9]+)";
+                pattern = @"(\|)([0-9]{3,}.[0-9]+)";
                 tcVersionMatches = Regex.Matches(ghHeadline, pattern);
 
-                pattern = @"Tc[A-Z,a-z,0-9,_]+";
+                pattern = @"Tc[0-9]_[A-Z,a-z,0-9,_]+";
                 libMatches = Regex.Matches(currentFileText, pattern);
 
                 lines = new string[libMatches.Count];
@@ -384,12 +384,7 @@ namespace TcLibraryVersions
                 {
                     int startOfString = currentFileText.IndexOf(libMatches[i].Value) + libMatches[i].Value.Length;
 
-
-                    if (i == 0)
-                    {
-                        lines[i] = currentFileText.Substring(startOfString, currentFileText.IndexOf("---") - startOfString - 2);
-                    }
-                    else if (i < libMatches.Count - 1)
+                    if (i < libMatches.Count - 1)
                     {
                         lines[i] = currentFileText.Substring(startOfString, currentFileText.IndexOf(libMatches[i + 1].Value) - startOfString - 2);
                     }
@@ -402,19 +397,17 @@ namespace TcLibraryVersions
                 ghVersionsTemp = new ArrayList[libMatches.Count];
                 
 
-                pattern = @"[0-9,.]{4,}";
+                pattern = @"[0-9,.]{4,}|--";
                 for (int i = 0; i < libMatches.Count; i++)
                 {
                     libVersionMatches = Regex.Matches(lines[i], pattern);
 
                     ghVersionsTemp[i] = new ArrayList();
 
+                    ghLibs.Add(libMatches[i].Value);
+
                     for (int j = 0; j < tcVersionMatches.Count; j++)
                     {
-                        if (i == 0)
-                        {
-                            ghLibs.Add(tcVersionMatches[j].Value);
-                        }
                         ghVersionsTemp[i].Add(libVersionMatches[j].Value);
                     }
                 }
@@ -422,6 +415,8 @@ namespace TcLibraryVersions
             }
             else
             {
+                pattern = @"[A-Z,a-z,0-9,_]+";
+                headlineMatches = Regex.Matches(ghHeadline, pattern);
                 // The table is not transposed
                 pattern = @"(\|)([0-9]{3,}.[0-9]+)(\|)";
                 tcVersionMatches = Regex.Matches(currentFileText, pattern);
@@ -443,7 +438,7 @@ namespace TcLibraryVersions
 
                 ghVersionsTemp = new ArrayList[tcVersionMatches.Count];
 
-                pattern = @"[0-9,.]{4,}";
+                pattern = @"[0-9,.]{4,}|--";
                 for (int i = 0; i < tcVersionMatches.Count; i++)
                 {
                     libVersionMatches = Regex.Matches(lines[i], pattern);
