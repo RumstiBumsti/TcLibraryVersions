@@ -8,10 +8,106 @@
     ".NETCoreApp,Version=v5.0": {
       "TcLibraryVersions/1.0.0": {
         "dependencies": {
+          "CommandLineParser": "2.8.0",
+          "LibGit2Sharp": "0.26.2",
+          "Octokit": "0.50.0",
           "ToMarkdownTable": "0.2.0"
         },
         "runtime": {
           "TcLibraryVersions.dll": {}
+        }
+      },
+      "CommandLineParser/2.8.0": {
+        "runtime": {
+          "lib/netstandard2.0/CommandLine.dll": {
+            "assemblyVersion": "2.8.0.0",
+            "fileVersion": "2.8.0.0"
+          }
+        }
+      },
+      "LibGit2Sharp/0.26.2": {
+        "dependencies": {
+          "LibGit2Sharp.NativeBinaries": "2.0.306"
+        },
+        "runtime": {
+          "lib/netstandard2.0/LibGit2Sharp.dll": {
+            "assemblyVersion": "0.26.0.0",
+            "fileVersion": "0.26.2.97"
+          }
+        }
+      },
+      "LibGit2Sharp.NativeBinaries/2.0.306": {
+        "runtimeTargets": {
+          "runtimes/alpine-x64/native/libgit2-106a5f2.so": {
+            "rid": "alpine-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/alpine.3.9-x64/native/libgit2-106a5f2.so": {
+            "rid": "alpine.3.9-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/debian-arm64/native/libgit2-106a5f2.so": {
+            "rid": "debian-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/debian.9-x64/native/libgit2-106a5f2.so": {
+            "rid": "debian.9-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/fedora-x64/native/libgit2-106a5f2.so": {
+            "rid": "fedora-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libgit2-106a5f2.so": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx/native/libgit2-106a5f2.dylib": {
+            "rid": "osx",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/rhel-x64/native/libgit2-106a5f2.so": {
+            "rid": "rhel-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/ubuntu.16.04-arm64/native/libgit2-106a5f2.so": {
+            "rid": "ubuntu.16.04-arm64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/ubuntu.18.04-x64/native/libgit2-106a5f2.so": {
+            "rid": "ubuntu.18.04-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/git2-106a5f2.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.28.4.0"
+          },
+          "runtimes/win-x64/native/git2-106a5f2.pdb": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x86/native/git2-106a5f2.dll": {
+            "rid": "win-x86",
+            "assetType": "native",
+            "fileVersion": "0.28.4.0"
+          },
+          "runtimes/win-x86/native/git2-106a5f2.pdb": {
+            "rid": "win-x86",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          }
         }
       },
       "Microsoft.NETCore.Platforms/1.0.1": {},
@@ -69,6 +165,14 @@
           "System.Threading.Timer": "4.0.1",
           "System.Xml.ReaderWriter": "4.0.11",
           "System.Xml.XDocument": "4.0.11"
+        }
+      },
+      "Octokit/0.50.0": {
+        "runtime": {
+          "lib/netstandard2.0/Octokit.dll": {
+            "assemblyVersion": "0.50.0.0",
+            "fileVersion": "0.50.0.0"
+          }
         }
       },
       "runtime.native.System/4.0.0": {
@@ -678,6 +782,27 @@
       "serviceable": false,
       "sha512": ""
     },
+    "CommandLineParser/2.8.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-eco2HlKQBY4Joz9odHigzGpVzv6pjsXnY5lziioMveQxr+i2Z7xYcIOMeZTgYiqnMtMAbXMXsVhrNfWO5vJS8Q==",
+      "path": "commandlineparser/2.8.0",
+      "hashPath": "commandlineparser.2.8.0.nupkg.sha512"
+    },
+    "LibGit2Sharp/0.26.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-qHLhuI8VEtMf7jiurT/Ypquh37S6ngllCx+aq9uqOY2evok7Fb2AzhJgvNctsXOzHaJwveBs+30sPQJFn/pISg==",
+      "path": "libgit2sharp/0.26.2",
+      "hashPath": "libgit2sharp.0.26.2.nupkg.sha512"
+    },
+    "LibGit2Sharp.NativeBinaries/2.0.306": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-LY9nyPE2X/eLl69ttuDPFFlKR8b5KXlqYej1YR1YmqmhF8Izo+vPX90q5ouOO5YGCf5d4lDUOC0x2yMWw00P7Q==",
+      "path": "libgit2sharp.nativebinaries/2.0.306",
+      "hashPath": "libgit2sharp.nativebinaries.2.0.306.nupkg.sha512"
+    },
     "Microsoft.NETCore.Platforms/1.0.1": {
       "type": "package",
       "serviceable": true,
@@ -705,6 +830,13 @@
       "sha512": "sha512-ypsCvIdCZ4IoYASJHt6tF2fMo7N30NLgV1EbmC+snO490OMl9FvVxmumw14rhReWU3j3g7BYudG6YCrchwHJlA==",
       "path": "netstandard.library/1.6.0",
       "hashPath": "netstandard.library.1.6.0.nupkg.sha512"
+    },
+    "Octokit/0.50.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-J5vqespSvjxIAAtjG1Tc6ghBqyfRgDJtKnk/ifi4N0hD/f3JbPwyEDRT+Eelu/bS4C4M6mu5gt1WJqar+fByzg==",
+      "path": "octokit/0.50.0",
+      "hashPath": "octokit.0.50.0.nupkg.sha512"
     },
     "runtime.native.System/4.0.0": {
       "type": "package",
