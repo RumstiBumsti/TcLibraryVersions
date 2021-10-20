@@ -2,6 +2,94 @@
   "version": 3,
   "targets": {
     "net5.0": {
+      "CommandLineParser/2.8.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/CommandLine.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/CommandLine.dll": {}
+        }
+      },
+      "LibGit2Sharp/0.26.2": {
+        "type": "package",
+        "dependencies": {
+          "LibGit2Sharp.NativeBinaries": "[2.0.306]"
+        },
+        "compile": {
+          "lib/netstandard2.0/LibGit2Sharp.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/LibGit2Sharp.dll": {}
+        }
+      },
+      "LibGit2Sharp.NativeBinaries/2.0.306": {
+        "type": "package",
+        "build": {
+          "build/LibGit2Sharp.NativeBinaries.props": {}
+        },
+        "buildMultiTargeting": {
+          "buildMultiTargeting/LibGit2Sharp.NativeBinaries.props": {}
+        },
+        "runtimeTargets": {
+          "runtimes/alpine-x64/native/libgit2-106a5f2.so": {
+            "assetType": "native",
+            "rid": "alpine-x64"
+          },
+          "runtimes/alpine.3.9-x64/native/libgit2-106a5f2.so": {
+            "assetType": "native",
+            "rid": "alpine.3.9-x64"
+          },
+          "runtimes/debian-arm64/native/libgit2-106a5f2.so": {
+            "assetType": "native",
+            "rid": "debian-arm64"
+          },
+          "runtimes/debian.9-x64/native/libgit2-106a5f2.so": {
+            "assetType": "native",
+            "rid": "debian.9-x64"
+          },
+          "runtimes/fedora-x64/native/libgit2-106a5f2.so": {
+            "assetType": "native",
+            "rid": "fedora-x64"
+          },
+          "runtimes/linux-x64/native/libgit2-106a5f2.so": {
+            "assetType": "native",
+            "rid": "linux-x64"
+          },
+          "runtimes/osx/native/libgit2-106a5f2.dylib": {
+            "assetType": "native",
+            "rid": "osx"
+          },
+          "runtimes/rhel-x64/native/libgit2-106a5f2.so": {
+            "assetType": "native",
+            "rid": "rhel-x64"
+          },
+          "runtimes/ubuntu.16.04-arm64/native/libgit2-106a5f2.so": {
+            "assetType": "native",
+            "rid": "ubuntu.16.04-arm64"
+          },
+          "runtimes/ubuntu.18.04-x64/native/libgit2-106a5f2.so": {
+            "assetType": "native",
+            "rid": "ubuntu.18.04-x64"
+          },
+          "runtimes/win-x64/native/git2-106a5f2.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/git2-106a5f2.pdb": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x86/native/git2-106a5f2.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          },
+          "runtimes/win-x86/native/git2-106a5f2.pdb": {
+            "assetType": "native",
+            "rid": "win-x86"
+          }
+        }
+      },
       "Microsoft.NETCore.Platforms/1.0.1": {
         "type": "package",
         "compile": {
@@ -78,6 +166,15 @@
           "System.Threading.Timer": "4.0.1",
           "System.Xml.ReaderWriter": "4.0.11",
           "System.Xml.XDocument": "4.0.11"
+        }
+      },
+      "Octokit/0.50.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Octokit.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Octokit.dll": {}
         }
       },
       "runtime.native.System/4.0.0": {
@@ -1082,6 +1179,79 @@
     }
   },
   "libraries": {
+    "CommandLineParser/2.8.0": {
+      "sha512": "eco2HlKQBY4Joz9odHigzGpVzv6pjsXnY5lziioMveQxr+i2Z7xYcIOMeZTgYiqnMtMAbXMXsVhrNfWO5vJS8Q==",
+      "type": "package",
+      "path": "commandlineparser/2.8.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "CommandLine20.png",
+        "License.md",
+        "README.md",
+        "commandlineparser.2.8.0.nupkg.sha512",
+        "commandlineparser.nuspec",
+        "lib/net40/CommandLine.dll",
+        "lib/net40/CommandLine.xml",
+        "lib/net45/CommandLine.dll",
+        "lib/net45/CommandLine.xml",
+        "lib/net461/CommandLine.dll",
+        "lib/net461/CommandLine.xml",
+        "lib/netstandard2.0/CommandLine.dll",
+        "lib/netstandard2.0/CommandLine.xml"
+      ]
+    },
+    "LibGit2Sharp/0.26.2": {
+      "sha512": "qHLhuI8VEtMf7jiurT/Ypquh37S6ngllCx+aq9uqOY2evok7Fb2AzhJgvNctsXOzHaJwveBs+30sPQJFn/pISg==",
+      "type": "package",
+      "path": "libgit2sharp/0.26.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "App_Readme/CHANGES.md",
+        "App_Readme/LICENSE.md",
+        "App_Readme/README.md",
+        "lib/net46/LibGit2Sharp.dll",
+        "lib/net46/LibGit2Sharp.pdb",
+        "lib/net46/LibGit2Sharp.xml",
+        "lib/netstandard2.0/LibGit2Sharp.dll",
+        "lib/netstandard2.0/LibGit2Sharp.pdb",
+        "lib/netstandard2.0/LibGit2Sharp.xml",
+        "libgit2sharp.0.26.2.nupkg.sha512",
+        "libgit2sharp.nuspec"
+      ]
+    },
+    "LibGit2Sharp.NativeBinaries/2.0.306": {
+      "sha512": "LY9nyPE2X/eLl69ttuDPFFlKR8b5KXlqYej1YR1YmqmhF8Izo+vPX90q5ouOO5YGCf5d4lDUOC0x2yMWw00P7Q==",
+      "type": "package",
+      "path": "libgit2sharp.nativebinaries/2.0.306",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/LibGit2Sharp.NativeBinaries.props",
+        "build/net46/LibGit2Sharp.NativeBinaries.props",
+        "buildMultiTargeting/LibGit2Sharp.NativeBinaries.props",
+        "libgit2/LibGit2Sharp.dll.config",
+        "libgit2/libgit2.license.txt",
+        "libgit2/libgit2_hash.txt",
+        "libgit2sharp.nativebinaries.2.0.306.nupkg.sha512",
+        "libgit2sharp.nativebinaries.nuspec",
+        "runtimes/alpine-x64/native/libgit2-106a5f2.so",
+        "runtimes/alpine.3.9-x64/native/libgit2-106a5f2.so",
+        "runtimes/debian-arm64/native/libgit2-106a5f2.so",
+        "runtimes/debian.9-x64/native/libgit2-106a5f2.so",
+        "runtimes/fedora-x64/native/libgit2-106a5f2.so",
+        "runtimes/linux-x64/native/libgit2-106a5f2.so",
+        "runtimes/osx/native/libgit2-106a5f2.dylib",
+        "runtimes/rhel-x64/native/libgit2-106a5f2.so",
+        "runtimes/ubuntu.16.04-arm64/native/libgit2-106a5f2.so",
+        "runtimes/ubuntu.18.04-x64/native/libgit2-106a5f2.so",
+        "runtimes/win-x64/native/git2-106a5f2.dll",
+        "runtimes/win-x64/native/git2-106a5f2.pdb",
+        "runtimes/win-x86/native/git2-106a5f2.dll",
+        "runtimes/win-x86/native/git2-106a5f2.pdb"
+      ]
+    },
     "Microsoft.NETCore.Platforms/1.0.1": {
       "sha512": "2G6OjjJzwBfNOO8myRV/nFrbTw5iA+DEm0N+qUqhrOmaVtn4pC77h38I1jsXGw5VH55+dPfQsqHD0We9sCl9FQ==",
       "type": "package",
@@ -1157,6 +1327,22 @@
         "dotnet_library_license.txt",
         "netstandard.library.1.6.0.nupkg.sha512",
         "netstandard.library.nuspec"
+      ]
+    },
+    "Octokit/0.50.0": {
+      "sha512": "J5vqespSvjxIAAtjG1Tc6ghBqyfRgDJtKnk/ifi4N0hD/f3JbPwyEDRT+Eelu/bS4C4M6mu5gt1WJqar+fByzg==",
+      "type": "package",
+      "path": "octokit/0.50.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net46/Octokit.dll",
+        "lib/net46/Octokit.xml",
+        "lib/netstandard2.0/Octokit.dll",
+        "lib/netstandard2.0/Octokit.xml",
+        "octokit.0.50.0.nupkg.sha512",
+        "octokit.nuspec",
+        "octokit.png"
       ]
     },
     "runtime.native.System/4.0.0": {
@@ -4101,6 +4287,9 @@
   },
   "projectFileDependencyGroups": {
     "net5.0": [
+      "CommandLineParser >= 2.8.0",
+      "LibGit2Sharp >= 0.26.2",
+      "Octokit >= 0.50.0",
       "ToMarkdownTable >= 0.2.0"
     ]
   },
@@ -4148,6 +4337,18 @@
       "net5.0": {
         "targetAlias": "net5.0",
         "dependencies": {
+          "CommandLineParser": {
+            "target": "Package",
+            "version": "[2.8.0, )"
+          },
+          "LibGit2Sharp": {
+            "target": "Package",
+            "version": "[0.26.2, )"
+          },
+          "Octokit": {
+            "target": "Package",
+            "version": "[0.50.0, )"
+          },
           "ToMarkdownTable": {
             "target": "Package",
             "version": "[0.2.0, )"

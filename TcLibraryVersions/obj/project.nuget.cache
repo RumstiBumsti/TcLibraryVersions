@@ -1,13 +1,17 @@
 {
   "version": 2,
-  "dgSpecHash": "OQ2msQx0vSuhdd06Ed+rmp/gEBASk93UnMvr0gg2Vs5xJ54bTDKIF42ysA40PR8DJthUNYGlq9XR0UvVGoeccQ==",
+  "dgSpecHash": "h/tZ0ptaCsUqdjPPHKyAAjaF/UZkRmQ3kcgF7vPlNjwwghsfx6s3qFNrE/oUV8ML1oBYMkWYGlkOI3Ts6ZfNiA==",
   "success": true,
   "projectFilePath": "C:\\CS\\C#\\TcLibraryVersions\\TcLibraryVersions\\TcLibraryVersions.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\U7050632\\.nuget\\packages\\commandlineparser\\2.8.0\\commandlineparser.2.8.0.nupkg.sha512",
+    "C:\\Users\\U7050632\\.nuget\\packages\\libgit2sharp\\0.26.2\\libgit2sharp.0.26.2.nupkg.sha512",
+    "C:\\Users\\U7050632\\.nuget\\packages\\libgit2sharp.nativebinaries\\2.0.306\\libgit2sharp.nativebinaries.2.0.306.nupkg.sha512",
     "C:\\Users\\U7050632\\.nuget\\packages\\microsoft.netcore.platforms\\1.0.1\\microsoft.netcore.platforms.1.0.1.nupkg.sha512",
     "C:\\Users\\U7050632\\.nuget\\packages\\microsoft.netcore.targets\\1.0.1\\microsoft.netcore.targets.1.0.1.nupkg.sha512",
     "C:\\Users\\U7050632\\.nuget\\packages\\microsoft.win32.primitives\\4.0.1\\microsoft.win32.primitives.4.0.1.nupkg.sha512",
     "C:\\Users\\U7050632\\.nuget\\packages\\netstandard.library\\1.6.0\\netstandard.library.1.6.0.nupkg.sha512",
+    "C:\\Users\\U7050632\\.nuget\\packages\\octokit\\0.50.0\\octokit.0.50.0.nupkg.sha512",
     "C:\\Users\\U7050632\\.nuget\\packages\\runtime.native.system\\4.0.0\\runtime.native.system.4.0.0.nupkg.sha512",
     "C:\\Users\\U7050632\\.nuget\\packages\\runtime.native.system.io.compression\\4.1.0\\runtime.native.system.io.compression.4.1.0.nupkg.sha512",
     "C:\\Users\\U7050632\\.nuget\\packages\\runtime.native.system.net.http\\4.0.1\\runtime.native.system.net.http.4.0.1.nupkg.sha512",

@@ -44,6 +44,18 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "CommandLineParser": {
+              "target": "Package",
+              "version": "[2.8.0, )"
+            },
+            "LibGit2Sharp": {
+              "target": "Package",
+              "version": "[0.26.2, )"
+            },
+            "Octokit": {
+              "target": "Package",
+              "version": "[0.50.0, )"
+            },
             "ToMarkdownTable": {
               "target": "Package",
               "version": "[0.2.0, )"
