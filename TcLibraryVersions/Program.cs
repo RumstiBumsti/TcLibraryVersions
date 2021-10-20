@@ -457,7 +457,7 @@ namespace TcLibraryVersions
             }            
 
             // ############### Edit the table ###################
-            for (int i = 0; i < headlineMatches.Count; i++)
+            for (int i = 0; i < ghLibs.Count; i++)
             {
                 if (libs.Count > i)
                 {
