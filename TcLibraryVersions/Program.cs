@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.Text;
 using System.Collections;
+using System.Diagnostics;
 using Octokit;
 using System.Linq;
 using System.Threading.Tasks;
@@ -58,10 +59,9 @@ namespace TcLibraryVersions
 
             // ############### Get informations of the current installed system ###################
             string TcVersion;
-            string pattern;
             ArrayList libs, latestVersion;
             int index;
-            checkLocalLibraries(out TcVersion, out pattern, out libs, out latestVersion, out index);
+            checkLocalLibraries(out TcVersion, out libs, out latestVersion, out index);
 
             string headline, secondLine;
             string[] versionLines;           
@@ -595,31 +595,25 @@ namespace TcLibraryVersions
             return versionLines;
         }
 
-        private static void checkLocalLibraries(out string TcVersion, out string pattern, out ArrayList libs, out ArrayList latestVersion, out int index)
+        private static void checkLocalLibraries(out string TcVersion, out ArrayList libs, out ArrayList latestVersion, out int index)
         {
-            System.IO.DirectoryInfo[] dirs = null;
-            System.IO.DirectoryInfo root = new System.IO.DirectoryInfo("C:\\TwinCAT\\3.1\\Runtimes\\bin");
+            TcVersion = "";
 
-            // root directory for the Twincat version
+            // Check the product version of TCATSysSrv.exe
             try
             {
-                dirs = root.GetDirectories("*");
+                var versionInfo = FileVersionInfo.GetVersionInfo(@"C:\TwinCAT\3.1\System\TCATSysSrv.exe");
+                TcVersion = versionInfo.ProductBuildPart.ToString() + "." + versionInfo.ProductPrivatePart.ToString();
             }
-            catch (System.IO.DirectoryNotFoundException)
+            catch (System.IO.FileNotFoundException)
             {
                 Console.WriteLine("Twincat Path not found on System");
                 System.Environment.Exit(0);
             }
 
-            pattern = @"[0-9]{3,}.[0-9]+";
-
-            // extract the twincat version from the folder name
-            Match m = Regex.Match(dirs[0].Name, pattern);
-            TcVersion = m.Value;
-
             // root Directory for the installed libs
-            root = new System.IO.DirectoryInfo("C:\\TwinCAT\\3.1\\Components\\Plc\\Managed Libraries\\Beckhoff Automation GmbH");
-            dirs = root.GetDirectories("*");
+            System.IO.DirectoryInfo root = new System.IO.DirectoryInfo("C:\\TwinCAT\\3.1\\Components\\Plc\\Managed Libraries\\Beckhoff Automation GmbH");
+            System.IO.DirectoryInfo[] dirs = root.GetDirectories("*");
 
             libs = new ArrayList();
             latestVersion = new ArrayList();
