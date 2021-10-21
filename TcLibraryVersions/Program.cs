@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.Text;
 using System.Collections;
+using System.Diagnostics;
 using Octokit;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,7 +39,7 @@ namespace TcLibraryVersions
             public bool Commit { get; set; }
 
             [Option('m', "manually", Required = false,
-                                    HelpText = "Insert the SSH Key manually. (And not via an environment variable)")]
+                                    HelpText = "Insert the Personal Access Token manually. (And not via an environment variable)")]
             public bool Manually { get; set; }
 
 
@@ -53,15 +54,14 @@ namespace TcLibraryVersions
         static async Task Main(string[] args)
         {
             // ############### Check Options ###################
-            bool directUpload = false, cloneRepo = true, push = false, inputSshManually = false, transposeTable = false;
-            checkOptions(args, out directUpload, out cloneRepo, out push, out inputSshManually, out transposeTable);
+            bool directUpload = false, cloneRepo = true, push = false, inputTokenManually = false, transposeTable = false;
+            checkOptions(args, out directUpload, out cloneRepo, out push, out inputTokenManually, out transposeTable);
 
             // ############### Get informations of the current installed system ###################
             string TcVersion;
-            string pattern;
             ArrayList libs, latestVersion;
             int index;
-            checkLocalLibraries(out TcVersion, out pattern, out libs, out latestVersion, out index);
+            checkLocalLibraries(out TcVersion, out libs, out latestVersion, out index);
 
             string headline, secondLine;
             string[] versionLines;           
@@ -73,13 +73,57 @@ namespace TcLibraryVersions
                 // ############### Update Table directly on Github ###################
                 // ############################################################
 
-                string fullText = "";
+                string fullText;
+                string currentText;
+                string cred;
+                string sha;
+
+                // Enter GitHub Username
+                Console.Write("Enter your Github username: ");
+                string userName = Console.ReadLine();
+
+                var (owner, repoName, filePath, branch) = (userName, "TcLibraryVersions", "README.md", "main");
 
                 var gitHubClient = new GitHubClient(new ProductHeaderValue("TcLibraryVersions"));
+                if (inputTokenManually)
+                {
+                    // manual input of Personal Access Token
+                    Console.WriteLine("Please insert your Personal Access Token of Github");
+                    cred = Console.ReadLine();
+                }
+                else
+                {
+                    // Input via environment variable
+                    cred = Environment.GetEnvironmentVariable("GITHUBKEY");
+                }
+                gitHubClient.Credentials = new Octokit.Credentials(cred);
 
-                var tuple = await getReadmeFromGithub(inputSshManually, gitHubClient);
-                string currentText = tuple.Item1;
-                string sha = tuple.Item2;
+                if (userName.Equals("RumstiBumsti"))
+                {
+                    // If i do the changes i do not need to fork
+                    var tuple = await getReadmeFromGithub(inputTokenManually, gitHubClient);
+                    currentText = tuple.Item1;
+                    sha = tuple.Item2;
+                }
+                else
+                {
+                    // everybody else has to fork the repo first
+                    var newRepositoryFork = new NewRepositoryFork();
+                    try
+                    {
+                        await gitHubClient.Repository.Forks.Create("RumstiBumsti", "TcLibraryVersions", new NewRepositoryFork());
+                    }
+                    catch (Octokit.AuthorizationException)
+                    {
+                        Console.WriteLine("Invalid Credentials");
+                        System.Environment.Exit(0);
+                    }
+                    
+                    var contents = await gitHubClient.Repository.Content.GetAllContentsByRef(owner, repoName, filePath, branch);
+                    sha = contents.First().Sha;
+                    currentText = contents.First().Content;
+                }
+                
 
                 ArrayList tcVersions;
                 ArrayList[] ghVersions;
@@ -91,11 +135,33 @@ namespace TcLibraryVersions
                     versionLines = createVersionlinesFromArrayLists(TcVersion, tcVersions, libs, ghVersions, transposeTable);
                     writeLocalTable(ref headline, ref secondLine, versionLines);
                     fullText = currentText.Substring(0, currentText.IndexOf("|TcVersion|")) + headline + secondLine;
+
                     foreach (string vline in versionLines)
                     {
                         fullText += vline;
                     }
-                    await updateReadmeOnGithub(fullText, TcVersion, sha, gitHubClient);
+
+                    if (userName.Equals("RumstiBumsti"))
+                    {
+                        await updateReadmeOnGithub(fullText, TcVersion, sha, gitHubClient);
+                    }
+                    else
+                    {
+                        string commitMessage = "inserted entry for Twincat Version: " + TcVersion;
+
+                        try
+                        {
+                            var updateRequest = new UpdateFileRequest(commitMessage, fullText, sha, branch);
+                            var updatefile = await gitHubClient.Repository.Content.UpdateFile(owner, repoName, filePath, updateRequest);
+                            NewPullRequest newPr = new NewPullRequest(commitMessage, userName+":main", "main");
+                            await gitHubClient.PullRequest.Create("RumstiBumsti", "TcLibraryVersions", newPr);
+                        }
+                        catch (Octokit.NotFoundException)
+                        {
+                            Console.WriteLine("Seems like the github Client does not have the permissions to write the readme file");
+                            System.Environment.Exit(0);
+                        }                        
+                    }
                 }
                 else
                 {
@@ -153,7 +219,7 @@ namespace TcLibraryVersions
 
                     if (push)
                     {
-                        pushChanges(inputSshManually, repo, userName);
+                        pushChanges(inputTokenManually, repo, userName);
                     }
                 }
                 else
@@ -178,11 +244,11 @@ namespace TcLibraryVersions
             }
         }
 
-        private static void pushChanges(bool inputSSH, LibGit2Sharp.Repository repo, string userName)
+        private static void pushChanges(bool inputToken, LibGit2Sharp.Repository repo, string userName)
         {
             string accessToken = "";
 
-            if (inputSSH)
+            if (inputToken)
             {
                 Console.Write("Enter your access token: ");
                 accessToken = Console.ReadLine();
@@ -276,24 +342,8 @@ namespace TcLibraryVersions
             
         }
 
-        private static async Task<Tuple<string,string>> getReadmeFromGithub(bool inputSSH, GitHubClient gitHubClient)
+        private static async Task<Tuple<string,string>> getReadmeFromGithub(bool inputToken, GitHubClient gitHubClient)
         {
-            string cred = "";
-            if (inputSSH)
-            {
-                // manual input of SSH Key
-                Console.WriteLine("Please insert you SSH Key");
-                cred = Console.ReadLine();
-            }
-            else
-            {
-                // Input via environment variable
-                cred = Environment.GetEnvironmentVariable("GITHUBKEY");
-            }
-
-
-            gitHubClient.Credentials = new Octokit.Credentials(cred);
-
             var (owner, repoName, filePath, branch) = ("RumstiBumsti", "TcLibraryVersions", "README.md", "main");
             var currentFileText = "";
             IReadOnlyList<RepositoryContent> contents = null;
@@ -320,9 +370,9 @@ namespace TcLibraryVersions
             }
             catch (Octokit.AuthorizationException)
             {
-                if (inputSSH)
+                if (inputToken)
                 {
-                    Console.WriteLine("The SSH-Key is not valid.");
+                    Console.WriteLine("The Personal Access Token is not valid.");
                 }
                 else
                 {
@@ -353,7 +403,7 @@ namespace TcLibraryVersions
 
         private static void createVersionArrayLists(ArrayList libs, ArrayList latestVersion, string TcVersion, string currentFileText, out ArrayList tcVersions, out ArrayList[] ghVersions)
         {
-            string ghHeadline = currentFileText.Substring(currentFileText.IndexOf("|TcVersion|") + 11);
+            string ghHeadline = currentFileText.Substring(currentFileText.IndexOf("|TcVersion|") + 10);
             string linebreak = ghHeadline.IndexOf("\n") >= 0 ? "\n" : "\r\n";
             ghHeadline = ghHeadline.Substring(0, ghHeadline.IndexOf(linebreak));
 
@@ -366,17 +416,17 @@ namespace TcLibraryVersions
             ArrayList[] ghVersionsTemp;
             string[] lines;
 
-            string pattern = @"[A-Z,a-z,0-9,_]+";
+            string pattern = @"([0-9]{3,}.[0-9]+)";
             headlineMatches = Regex.Matches(ghHeadline, pattern);
 
             // find out if the currentext has a normal or transposed table
-            if(headlineMatches.Count == 0)
+            if(headlineMatches.Count > 0)
             {
                 // The table is transposed
-                pattern = @"([0-9]{3,}.[0-9]+)";
+                pattern = @"(\|)([0-9]{3,}.[0-9]+)";
                 tcVersionMatches = Regex.Matches(ghHeadline, pattern);
 
-                pattern = @"Tc[A-Z,a-z,0-9,_]+";
+                pattern = @"Tc[0-9]_[A-Z,a-z,0-9,_]+";
                 libMatches = Regex.Matches(currentFileText, pattern);
 
                 lines = new string[libMatches.Count];
@@ -384,13 +434,9 @@ namespace TcLibraryVersions
                 {
                     int startOfString = currentFileText.IndexOf(libMatches[i].Value) + libMatches[i].Value.Length;
 
-
-                    if (i == 0)
+                    if (i < libMatches.Count - 1)
                     {
-                        lines[i] = currentFileText.Substring(startOfString, currentFileText.IndexOf("---") - startOfString - 2);
-                    }
-                    else if (i < libMatches.Count - 1)
-                    {
+                        int uhuh = currentFileText.IndexOf(libMatches[i + 1].Value);
                         lines[i] = currentFileText.Substring(startOfString, currentFileText.IndexOf(libMatches[i + 1].Value) - startOfString - 2);
                     }
                     else
@@ -402,19 +448,17 @@ namespace TcLibraryVersions
                 ghVersionsTemp = new ArrayList[libMatches.Count];
                 
 
-                pattern = @"[0-9,.]{4,}";
+                pattern = @"[0-9,.]{4,}|--";
                 for (int i = 0; i < libMatches.Count; i++)
                 {
                     libVersionMatches = Regex.Matches(lines[i], pattern);
 
                     ghVersionsTemp[i] = new ArrayList();
 
+                    ghLibs.Add(libMatches[i].Value);
+
                     for (int j = 0; j < tcVersionMatches.Count; j++)
                     {
-                        if (i == 0)
-                        {
-                            ghLibs.Add(tcVersionMatches[j].Value);
-                        }
                         ghVersionsTemp[i].Add(libVersionMatches[j].Value);
                     }
                 }
@@ -422,6 +466,8 @@ namespace TcLibraryVersions
             }
             else
             {
+                pattern = @"[A-Z,a-z,0-9,_]+";
+                headlineMatches = Regex.Matches(ghHeadline, pattern);
                 // The table is not transposed
                 pattern = @"(\|)([0-9]{3,}.[0-9]+)(\|)";
                 tcVersionMatches = Regex.Matches(currentFileText, pattern);
@@ -443,7 +489,7 @@ namespace TcLibraryVersions
 
                 ghVersionsTemp = new ArrayList[tcVersionMatches.Count];
 
-                pattern = @"[0-9,.]{4,}";
+                pattern = @"[0-9,.]{4,}|--";
                 for (int i = 0; i < tcVersionMatches.Count; i++)
                 {
                     libVersionMatches = Regex.Matches(lines[i], pattern);
@@ -462,7 +508,7 @@ namespace TcLibraryVersions
             }            
 
             // ############### Edit the table ###################
-            for (int i = 0; i < headlineMatches.Count; i++)
+            for (int i = 0; i < ghLibs.Count; i++)
             {
                 if (libs.Count > i)
                 {
@@ -600,31 +646,25 @@ namespace TcLibraryVersions
             return versionLines;
         }
 
-        private static void checkLocalLibraries(out string TcVersion, out string pattern, out ArrayList libs, out ArrayList latestVersion, out int index)
+        private static void checkLocalLibraries(out string TcVersion, out ArrayList libs, out ArrayList latestVersion, out int index)
         {
-            System.IO.DirectoryInfo[] dirs = null;
-            System.IO.DirectoryInfo root = new System.IO.DirectoryInfo("C:\\TwinCAT\\3.1\\Runtimes\\bin");
+            TcVersion = "";
 
-            // root directory for the Twincat version
+            // Check the product version of TCATSysSrv.exe
             try
             {
-                dirs = root.GetDirectories("*");
+                var versionInfo = FileVersionInfo.GetVersionInfo(@"C:\TwinCAT\3.1\System\TCATSysSrv.exe");
+                TcVersion = versionInfo.ProductBuildPart.ToString() + "." + versionInfo.ProductPrivatePart.ToString();
             }
-            catch (System.IO.DirectoryNotFoundException)
+            catch (System.IO.FileNotFoundException)
             {
                 Console.WriteLine("Twincat Path not found on System");
                 System.Environment.Exit(0);
             }
 
-            pattern = @"[0-9]{3,}.[0-9]+";
-
-            // extract the twincat version from the folder name
-            Match m = Regex.Match(dirs[0].Name, pattern);
-            TcVersion = m.Value;
-
             // root Directory for the installed libs
-            root = new System.IO.DirectoryInfo("C:\\TwinCAT\\3.1\\Components\\Plc\\Managed Libraries\\Beckhoff Automation GmbH");
-            dirs = root.GetDirectories("*");
+            System.IO.DirectoryInfo root = new System.IO.DirectoryInfo("C:\\TwinCAT\\3.1\\Components\\Plc\\Managed Libraries\\Beckhoff Automation GmbH");
+            System.IO.DirectoryInfo[] dirs = root.GetDirectories("*");
 
             libs = new ArrayList();
             latestVersion = new ArrayList();
@@ -654,28 +694,27 @@ namespace TcLibraryVersions
             }
         }
 
-        private static void checkOptions(string[] args, out bool directUpload, out bool cloneRepo, out bool push, out bool inputSshManually, out bool transposeTable)
+        private static void checkOptions(string[] args, out bool directUpload, out bool cloneRepo, out bool push, out bool inputTokenManually, out bool transposeTable)
         {
             ParserResult<Options> parser = null;
             parser = Parser.Default.ParseArguments<Options>(args);
 
 
-            bool directUploadTemp = false, cloneRepoTemp = false, pushTemp = false, inputSshManuallyTemp = false, transposeTableTemp = false;
+            bool directUploadTemp = true, cloneRepoTemp = false, pushTemp = false, inputTokenManuallyTemp = true, transposeTableTemp = true;
 
             parser.WithParsed<Options>(o =>
             {
                 if (o.Direct)
                 {
                     directUploadTemp = true;
-                    inputSshManuallyTemp = false;
+                    inputTokenManuallyTemp = false;
                     cloneRepoTemp = false;
                 }
                 if (o.Local)
                 {
                     cloneRepoTemp = false;
-                    inputSshManuallyTemp = false;
+                    inputTokenManuallyTemp = false;
                     directUploadTemp = false;
-                    // Default Option
                 }
                 if (o.Push)
                 {
@@ -691,7 +730,7 @@ namespace TcLibraryVersions
                 }
                 if(o.Manually && !o.Local)
                 {
-                    inputSshManuallyTemp = true;
+                    inputTokenManuallyTemp = true;
                 }
                 if (o.Transpose)
                 {
@@ -703,7 +742,7 @@ namespace TcLibraryVersions
             directUpload = directUploadTemp;
             push = pushTemp;
             cloneRepo = cloneRepoTemp;
-            inputSshManually = inputSshManuallyTemp;
+            inputTokenManually = inputTokenManuallyTemp;
             transposeTable = transposeTableTemp;
         }
 
