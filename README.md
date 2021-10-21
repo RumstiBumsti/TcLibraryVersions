@@ -70,10 +70,9 @@ Since Beckhoff officially provide any information about the "TwinCAT version" - 
 |Tc2_Utilities|3.3.46.0|3.3.42.0|3.3.41.0|3.3.35.0|
 |Tc2_XmlDataSrv|3.3.1.0|3.3.1.0|3.3.1.0|3.3.0.0|
 |Tc3_BA|1.1.5.0|1.1.5.0|1.1.5.0|1.1.1.0|
-|Tc3_BA_Common|--|--|--|1.0.5.0|
+|Tc3_BA_Common|2.1.4.0|2.1.4.0|2.1.4.0|1.0.5.0|
 |Tc3_BA2_Common|2.1.11.0|2.1.9.0|2.1.3.23|--|
 |Tc3_BACnetRev14|4.1.16.0|4.1.9.0|4.0.22.12|--|
-|Tc3_BA_Common|2.1.4.0|2.1.4.0|2.1.4.0|--|
 |Tc3_DALI|3.8.0.0|3.6.2.0|3.5.0.0|3.1.4.0|
 |Tc3_Database|3.4.0.15|3.4.0.15|3.4.0.15|3.3.0.21|
 |Tc3_DriveMotionControl|3.0.3.0|3.0.3.0|3.0.3.0|--|
