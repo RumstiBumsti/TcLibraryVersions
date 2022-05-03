@@ -625,7 +625,21 @@ namespace TcLibraryVersions
                     versionLines[i] = "|" + libs[i] + "|";
                     for (int j = 0; j < tcVersions.Count; j++)
                     {
-                        versionLines[i] += ghVersions[i][j] + "|";
+                        if (j + 1 < ghVersions[i].Count)
+                        {
+                            if (!string.Equals(ghVersions[i][j], ghVersions[i][j+1]))
+                            {
+                                versionLines[i] += "**" + ghVersions[i][j] + "**|";
+                            }
+                            else
+                            {
+                                versionLines[i] += ghVersions[i][j] + "|";
+                            }
+                        }
+                        else
+                        {
+                            versionLines[i] += ghVersions[i][j] + "|";
+                        }
                     }
                 }
             }
