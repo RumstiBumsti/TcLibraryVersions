@@ -1,0 +1,10 @@
+
+title: TwinCAT Library Version
+description: Overview of all Twincat versions and corresponding libraries. You can clone the script and update the table if you see that it's incomplete.
+markdown: kramdown
+kramdown:
+  input: GFM  
+include:
+  - README.md  
+permalink: pretty 
+baseurl: "/TcLibraryVersions"

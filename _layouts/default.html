@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ site.title }}</title>
+  <link href="{{ site.baseurl }}/assets/style.css" rel="stylesheet" />
+  <script src="{{ site.baseurl }}/assets/main.js"></script>
+</head>
+<body>
+
+  <header>
+    <h1>{{ site.title }}</h1>
+  </header>
+
+  <main>
+    <input id="search" placeholder="Search..." type="text" />
+    {{ content }}
+  </main>
+
+  <footer>
+    <p>&copy; {{ "now" | date: "%Y" }} https://github.com/RumstiBumsti</p>
+  </footer>
+</body>
+</html>
