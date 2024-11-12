@@ -45,8 +45,12 @@ th {
   color: white;
 }
 
-table td:first-child {
+td:first-child, th:first-child {
   font-weight: bold;
+  position: sticky;
+  left: 0;
+  background-color: #f9f9f9;
+  z-index: 1;
 }
 
 table tr:hover {
