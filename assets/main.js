@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
     // remove unnecessary elements from README.md
     document.getElementById("tclibraryversions").remove(); 
-    document.getElementById("twincat-versions-and-the-library-versions-it-ships-with").remove(); 
     document.querySelectorAll('main p').forEach(e => e.remove());
 
     // search
