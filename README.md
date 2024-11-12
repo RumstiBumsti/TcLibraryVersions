@@ -1,14 +1,5 @@
 # TcLibraryVersions
 
-The TwinCAT remote manager facilitates developing in a production environment where multiple version of TwinCAT are used simultaniously. This is achieved by switching the TwinCAT version directly in the the integrated-development-environment (IDE, e.g. TwinCAT XAE).
-However, when installing TwinCAT with a specific version it comes with a large number of libraries in a specific version. With multiple version of TwinCAT installed, there is no real way to tell, which TwinCAT Version comes with what library version.
-
-In a supportable production-environment this information is crucial for maintaining stability. When a harddrive crashes it is desirable to go back to the exact version of all libraries that were used in the PLC with a CI system. Some times it may make no real difference, but in a production-environment the PLCs of some machines may be pretty old and upgrading them to a new library version may introduce undesirable sideeffects, e.g. some bugs in a new library version could have been fixed. As allows in development ["somebody's bug, may be somebody's feature"](https://xkcd.com/1172/) and thus, it is not always beneficial to update to a new version.
-
-Since Beckhoff does not officially provide any information about the "TwinCAT version" - "library version" relationship, this repository is used to provide this information to developers.
-
-# TwinCAT versions and the library versions it ships with
-
 |TcVersion|4024.62|4024.60|4024.59|4024.56|4024.55|4024.54|4024.53|4024.50|4024.47|4024.44|4024.42|4024.40|4024.35|4024.32|4024.29|4024.25|4024.22|4024.20|4024.17|4024.12|4022.29|4022.22|4022.16|4022.4|4020.39|
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 |Tc2_BA|3.4.1.0|3.4.1.0|3.4.1.0|3.4.1.0|3.4.1.0|3.4.1.0|3.4.1.0|3.3.9.0|3.3.9.0|3.3.9.0|3.3.9.0|3.3.9.0|3.3.9.0|3.3.9.0|3.3.9.0|3.3.9.0|3.3.9.0|3.3.9.0|3.3.9.0|3.3.9.0|3.1.12.0|3.1.8.1|3.1.6.0|3.1.6.0|3.1.3.0|
