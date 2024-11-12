@@ -38,13 +38,14 @@ header h1 {
   position: fixed; 
   top: 120px; 
   left: 20px; 
-  width: calc(100% - 40px); 
+  width: 200px; 
   padding: 12px 15px;
   margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 1rem;
   background-color: #fff;
+  border-radius: 0px 0px 0px 10px;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
   z-index: 999; 
 }
@@ -66,7 +67,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
-  margin-top: 185px;
+  margin-top: 100px;
 }
 
 th, td {
